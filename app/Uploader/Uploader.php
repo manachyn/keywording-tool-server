@@ -75,7 +75,7 @@ class Uploader implements ChunkingUploaderInterface
                 $result['uuid'],
                 $result['name']
             ]);
-            $result['url'] = app('url')->asset(str_replace(app()->basePath('public'), '', $path));
+            $result['url'] = env('STORAGE_URL') . str_replace(app()->basePath('public'), '', $path);
         }
 
         return $result;
