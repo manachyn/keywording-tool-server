@@ -2,7 +2,7 @@
 
 namespace App\Slicing;
 
-use App\Slicing\Exception\VideoSlicingException;
+use App\Slicing\Exceptions\VideoSlicingException;
 use App\Slicing\FFMpeg\FFMpegVideoSlicingCommandBuilder;
 use Exception;
 use Symfony\Component\Process\Process;

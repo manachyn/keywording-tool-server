@@ -35,6 +35,7 @@ class FFMpegVideoSlicingCommandBuilder extends VideoSlicingCommandBuilder
             $this->startTime,
             '-i',
             $this->input,
+            '-y',
             '-t',
             $this->duration,
             '-c',

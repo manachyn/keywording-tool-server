@@ -14,18 +14,19 @@ class SlicingController extends Controller
 {
     /**
      * @param Request $request
-     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function start(Request $request, $id)
+    public function start(Request $request)
     {
+        $this->validate($request, [
+            'video' => 'required',
+            'slices' => 'required'
+        ]);
+
+        $video = $request->input('video');
         $slices = $request->input('slices');
 
-        if (!$slices) {
-            abort(4001, 'Slices parameter is empty');
-        }
-
-        $job = new SlicingJob($slices);
+        $job = new SlicingJob($video, $slices);
         $job->onQueue('slicing');
 
         $job->beforeDispatch();
@@ -40,9 +41,10 @@ class SlicingController extends Controller
      * @param int $jobId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getStatus(Request $request, $jobId) {
+    public function status(Request $request, $jobId) {
 
         $job = SlicingJobModel::find($jobId);
+        $job->result = json_decode($job->result, true);
 
         return response()->json($job);
     }

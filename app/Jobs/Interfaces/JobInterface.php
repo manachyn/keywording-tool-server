@@ -37,6 +37,16 @@ interface JobInterface
     public function setLog($log);
 
     /**
+     * @return mixed
+     */
+    public function getResult();
+
+    /**
+     * @param mixed $result
+     */
+    public function setResult($result);
+
+    /**
      * Executed before job dispatch.
      */
     public function beforeDispatch();

@@ -28,12 +28,19 @@ class SlicingJob extends Job
     protected $slices;
 
     /**
+     * @var array
+     */
+    private $video;
+
+    /**
      * SlicingJob constructor.
+     * @param array $video
      * @param array $slices
      */
-    public function __construct(array $slices)
+    public function __construct(array $video, array $slices)
     {
         $this->slices = $slices;
+        $this->video = $video;
     }
 
     /**
@@ -45,6 +52,14 @@ class SlicingJob extends Job
     public function handle(VideoSlicingJobHandler $handler)
     {
         $handler->handleSlicingJob($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getVideo()
+    {
+        return $this->video;
     }
 
     /**
@@ -80,6 +95,23 @@ class SlicingJob extends Job
     {
         parent::setLog($log);
         $this->model->log = $log;
+        $this->model->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult()
+    {
+        return json_decode($this->model->result, true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setResult($result)
+    {
+        $this->model->result = json_encode($result);
         $this->model->save();
     }
 

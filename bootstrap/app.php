@@ -1,5 +1,7 @@
 <?php
 
+use palanik\lumen\Middleware\LumenCors;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 try {
@@ -66,6 +68,10 @@ $app->singleton(
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
+
+ $app->middleware([
+     LumenCors::class
+ ]);
 
 /*
 |--------------------------------------------------------------------------

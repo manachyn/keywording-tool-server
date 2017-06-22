@@ -11,15 +11,18 @@
 |
 */
 
+//echo 123;
+//exit();
+
 $app->get('/', function () use ($app) {
     return $app->version();
 });
 
 $app->group(['prefix' => 'api/v1'], function($app)
 {
-    $app->post('slicing/{id}', 'SlicingController@start');
+    $app->post('slicing/start', 'SlicingController@start');
 
-    $app->get('slicing/status/{jobId}', 'SlicingController@getStatus');
+    $app->get('slicing/status/{jobId}', 'SlicingController@status');
 
     $app->options('upload/upload', 'UploaderController@preflight');
 

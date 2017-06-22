@@ -38,6 +38,11 @@ abstract class Job implements ShouldQueue, JobInterface
     protected $log;
 
     /**
+     * @var mixed
+     */
+    protected $result;
+
+    /**
      * {@inheritdoc}
      */
     public function getStatus()
@@ -67,6 +72,22 @@ abstract class Job implements ShouldQueue, JobInterface
     public function setLog($log)
     {
         $this->log = $log;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
     }
 
     /**

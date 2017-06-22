@@ -34,11 +34,20 @@ class VideoSlicingJobHandler
     {
         try {
             $job->onStarted();
-
-            foreach ($job->getSlices() as $slice) {
-                $this->videoSlicingService->slice('/home/ubuntu/Downloads/oceans.mp4', $slice['offset'], $slice['duration'], '/home/ubuntu/Downloads/oceans-' . $slice['id'] . '.mp4');
+            $video = $job->getVideo();
+            $uploadsDir = env('UPLOADS_DIR', '/tmp');
+            $outputDir = $uploadsDir . DIRECTORY_SEPARATOR . 'slices';
+            if (!file_exists($outputDir)) {
+                mkdir($outputDir, 0777, true);
             }
-
+            $result = [];
+            foreach ($job->getSlices() as $slice) {
+                $input = $uploadsDir . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $video['uuid'] . DIRECTORY_SEPARATOR . $video['name'];
+                $output = $outputDir . DIRECTORY_SEPARATOR . pathinfo($video['name'], PATHINFO_FILENAME) . '-' . $slice['id'] . '.' . pathinfo($video['name'], PATHINFO_EXTENSION);
+                $this->videoSlicingService->slice($input, $slice['offset'], $slice['duration'], $output);
+                $result[] = env('STORAGE_URL') . str_replace(app()->basePath('public'), '', $output);
+            }
+            $job->setResult($result);
             $job->onCompleted();
         } catch (Exception $e) {
             $job->onFailed();
